@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import cv2
 from helper import *
+from skimage.metrics import structural_similarity
 
 ##### Loading images and true disparity maps
 
@@ -28,7 +29,23 @@ display( img_L_orig, img_R_orig, disp_L, disp_R, scale, calib[ "vmin"], calib[ "
 
 stereo = cv2.StereoBM_create( numDisparities=176, blockSize=7)
 disparity = stereo.compute( img_L, img_R)
+
+##### Scale the range of disparity into [0-1]
+
+disparity = np.float32( disparity - disparity.min()) / np.float32( disparity.max())
+
+##### Showing disparity
+
 plt.figure( figsize=( 10, 5))
 plt.imshow( disparity, cmap="jet")
 plt.axis( "off")
 plt.show()
+
+##### Compute SSIM
+
+ssim_L = structural_similarity( disparity, disp_L, data_range=1)
+ssim_R = structural_similarity( disparity, disp_R, data_range=1)
+
+print( f"SSIM with Left Disparity: { ssim_L}")
+print( f"SSIM with Right Disparity: { ssim_R}")
+print( f"Mean SSIM: { np.mean( [ ssim_L, ssim_R])}")

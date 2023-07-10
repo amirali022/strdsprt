@@ -11,7 +11,6 @@
 - numpy
 - matplotlib
 - PIL (pillow)
-- tensorflow
 - skimage
 
 #### Credit
