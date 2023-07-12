@@ -146,9 +146,6 @@ def block_matching( left, right, cost, numDisparity, ksize=3):
 			# Select Out the Area of Search from Right Image
 			area = right[ roi_height_low: i + r + 1, roi_width_low: j + numDisparity + 1]
 
-			# Finding the Middle of 
-			_, area_middle = area.shape
-
 			# Apply Filter with Desired Cost Function
 			s = filter( area, roi, cost)
 
